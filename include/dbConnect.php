@@ -11,7 +11,7 @@ https://www.php.net/manual/en/mysqli.construct.php
 $host     = 'localhost';
 $username = 'root';
 $passwd   = 'database2021'; #This operation is not secure
-$dbName   = 'world';
+$dbName   = 'RestaurantChain';
 
 $conn = mysqli_connect($host, $username, $passwd, $dbName, "3306", "/tmp/mysql.sock");
 

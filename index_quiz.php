@@ -1,10 +1,42 @@
-<!--
-    COMP306-
-
--->
 <html>
 <head></head>
 <body>
+
+    <!-- Find the names of the recipes served in Branch1 but not served in Branch2 -->
+    <form action='result_quiz.php' method='post'>
+        <label>First Branch: </label><input type='number' name='first_branch' /><br/>
+        <label>Second Branch: </label><input type='number' name='second_branch' />
+        <input name="get_different_recipes", value='Get Different Recipes' type='submit'/></p>
+    </form>
+    <hr>
+
+    <!-- Find the names of the staff that works in a branch with higher rating than 
+        average of all braches and has served more than 20 orders -->
+    <form action='result_quiz.php' method='post'>
+        <input name="get_successful_staff", value='Get Successful Staff' type='submit'/></p>
+    </form>
+    <hr>
+
+    <!-- Give them raise -->
+        <form action='result_quiz.php' method='post'>
+        <label>How much % raise do you want to give?: </label><input type='number' name='raise' /><br/>
+        <input name="raise_salaries", value='Raise Salaries' type='submit'/></p>
+    </form>
+    <hr>
+
+    <!-- Annual profit -->
+    <form action='result_quiz.php' method='post'>
+        <label>Which year's profits would you like to see?: </label><input type='number' name='year' /><br/>
+        <input name="get_annual_profit", value='Get Annual Profit' type='submit'/></p>
+    </form>
+    <hr>
+
+    <!-- Find the average profit list of recipes -->
+        <form action='result_quiz.php' method='post'>
+        <input name="get_average_profits", value='Get Average Recipe Profits' type='submit'/></p>
+    </form>
+    <hr>
+
 
     <!--Insert operation -->
     <form action='result_quiz.php' method='post'>

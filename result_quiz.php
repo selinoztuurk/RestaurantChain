@@ -3,6 +3,67 @@
 require_once 'include/dbConnect.php';
 require_once 'include/functions_quiz.php';
 
+if (isset($_POST['get_different_recipes'])){
+
+    $first_branch_ID = $_POST["first_branch"];
+    $second_branch_ID = $_POST["second_branch"];
+
+    if(check_branch($conn, $first_branch_ID) !== true or check_branch($conn, $second_branch_ID) !== true){
+        exit("Wrong branch ID(s)! Branch ID should exist in the database.");
+    }
+
+    $result = diff_recipe($conn,$first_branch_ID, $second_branch_ID);
+    echo "Returned rows are: " . mysqli_num_rows($result);
+    print_recipe_table($result);
+    mysqli_free_result($result);
+}
+
+if (isset($_POST['get_successful_staff'])){
+
+    $result = successful_staff($conn);
+    echo "Returned rows are: " . mysqli_num_rows($result);
+    print_staff_table($result);
+    mysqli_free_result($result);
+}
+
+if (isset($_POST['raise_salaries'])){
+
+    $percent = $_POST["raise"];
+
+    if($percent < 0){
+        exit("Percent cannot be negative!");
+    }
+
+    raise_salaries($conn,$percent);
+    $result = successful_staff($conn);
+    echo "You have increased salaries of ". mysqli_num_rows($result). " staff!";
+    print_staff_table($result);
+    mysqli_free_result($result);
+}
+
+if (isset($_POST['get_annual_profit'])){
+
+    $year = $_POST["year"];
+
+    if($year > 2021){
+        exit("Enter valid year!");
+    }
+
+    $result = annual_profit($conn, $year);
+    echo "Returned rows are: " . mysqli_num_rows($result);
+    print_profit_table($result);
+    mysqli_free_result($result);
+}
+
+if (isset($_POST['get_average_profits'])){
+
+    $result = average_profits($conn);
+    echo "Returned rows are: " . mysqli_num_rows($result);
+    print_recipe_profit_table($result);
+    mysqli_free_result($result);
+}
+
+
 if (isset($_POST['insert'])){
 
     $cid = $_POST["cid_insert"];

@@ -1,5 +1,181 @@
 <?php
 
+function check_branch($conn, $branch){   
+    return is_contains($conn, $branch, "BID", "Branch");
+}
+
+function diff_recipe($conn, $branch1, $branch2){
+
+    $sql = 
+    "SELECT R.RecipeName 
+    FROM RestaurantChain.Recipe as R, RestaurantChain.Orders as O
+        WHERE O.RecipeName = R.RecipeName 
+            AND O.BID = '$branch1'  
+            AND R.RecipeName NOT IN (SELECT R.RecipeName 
+                                        FROM RestaurantChain.Recipe as R, RestaurantChain.Orders as O
+                                        WHERE O.RecipeName = R.RecipeName 
+                                        AND O.BID = '$branch2');
+    ";
+
+    $result = mysqli_query($conn, $sql);
+
+    return $result;
+}
+
+function print_recipe_table($result){
+    ?><br>
+    <table border='1'>
+    <tr>
+    <th>Recipe Names</th>
+    </tr>
+    <?php
+    foreach($result as $row){
+        echo "<tr>";
+        echo "<td>" . $row['RecipeName'] . "</td>";
+        echo "</tr>";
+    }
+    echo "</table>";
+
+}
+
+function successful_staff($conn){
+
+    $sql = 
+    "SELECT S.Name, S.Salary
+    FROM Staff as S, (SELECT Rate.BID, AVG(Rate.Rating) 
+    FROM CustomerRatesBranch as Rate
+    GROUP BY (Rate.BID)
+    HAVING AVG(Rate.Rating) > (SELECT AVG(avg_rat.Avg_Rating) 
+                        FROM (SELECT Rate.BID, AVG(Rate.Rating) 
+                        FROM CustomerRatesBranch as Rate
+                        GROUP BY (RATE.BID)) AS avg_rat(branchID, Avg_Rating))) as BID_AVG(BID, avgrate) 
+    WHERE BID_AVG.BID = S.BID
+    AND S.SID IN (SELECT O2.StaffID 
+                    FROM Orders as O2
+                    GROUP BY (O2.StaffID)
+                    HAVING COUNT(*)>20); 
+    ";
+
+    $result = mysqli_query($conn, $sql);
+
+    return $result;
+}
+
+function raise_salaries($conn,$percent) {
+    $raise_amount = ((float) $percent /  100.0) + 1;
+
+    $sql = "UPDATE Staff
+    INNER JOIN 
+    (SELECT S.Name
+        FROM Staff as S, (SELECT Rate.BID, AVG(Rate.Rating) 
+        FROM CustomerRatesBranch as Rate
+        GROUP BY (Rate.BID)
+        HAVING AVG(Rate.Rating) > (SELECT AVG(avg_rat.Avg_Rating) 
+                            FROM (SELECT Rate.BID, AVG(Rate.Rating) 
+                            FROM CustomerRatesBranch as Rate
+                            GROUP BY (RATE.BID)) AS avg_rat(branchID, Avg_Rating))) as BID_AVG(BID, avgrate)  
+        WHERE BID_AVG.BID = S.BID
+        AND S.SID IN (SELECT O2.StaffID 
+                        FROM Orders as O2
+                        GROUP BY (O2.StaffID)
+                        HAVING COUNT(*)>20)) as my_table(my_names)
+    ON Staff.Name = my_table.my_names
+    SET Staff.Salary = Staff.Salary*'$raise_amount';";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Record updated successfully! ";
+    } else {
+        echo "Error updating record: " . $conn->error;
+    }
+}
+
+function annual_profit($conn, $year){
+
+    $sql = "SELECT B.BID, SUM(R.Price) as annual_profit
+    FROM RestaurantChain.Recipe as R, RestaurantChain.Orders as O, RestaurantChain.Branch as B
+    WHERE O.BID = B.BID 
+    AND R.RecipeName = O.RecipeName 
+    AND YEAR(O.Date)='$year' 
+    GROUP BY B.BID  
+    ORDER BY SUM(R.Price) ASC;";
+
+    $result = mysqli_query($conn, $sql);
+
+    return $result;
+}
+
+function print_staff_table($result){
+    ?><br>
+    <table border='1'>
+    <tr>
+    <th>Staff Names</th>
+    <th>Salaries</th>
+    </tr>
+    <?php
+    foreach($result as $row){
+        echo "<tr>";
+        echo "<td>" . $row['Name'] . "</td>";
+        echo "<td>" . $row['Salary'] . "</td>";
+        echo "</tr>";
+    }
+    echo "</table>";
+
+}
+
+function print_profit_table($result){
+    ?><br>
+    <table border='1'>
+    <tr>
+    <th>Branch ID</th>
+    <th>Annual Profit</th>
+    </tr>
+    <?php
+    foreach($result as $row){
+        echo "<tr>";
+        echo "<td>" . $row['BID'] . "</td>";
+        echo "<td>" . $row['annual_profit'] . "</td>";
+        echo "</tr>";
+    }
+    echo "</table>";
+
+}
+
+function average_profits($conn){
+
+    $sql = 
+    "SELECT AVG(R.Price - I.Price * RI.Amount) as Average_Recipe_Profit, R.RecipeName
+    FROM Recipe as R, 
+    RecipeIngredient as RI,
+    Ingredient as I
+    WHERE RI.IngredientName = I.IngredientName AND RI.RecipeName = R.RecipeName
+    GROUP BY (R.RecipeName)
+    ORDER BY Average_Recipe_Profit ASC;
+    ";
+
+    $result = mysqli_query($conn, $sql);
+
+    return $result;
+}
+
+function print_recipe_profit_table($result){
+    ?><br>
+    <table border='1'>
+    <tr>
+    <th>Recipe Name</th>
+    <th>Average Profit</th>
+    </tr>
+    <?php
+    foreach($result as $row){
+        echo "<tr>";
+        echo "<td>" . $row['RecipeName'] . "</td>";
+        echo "<td>" . $row['Average_Recipe_Profit'] . "</td>";
+        echo "</tr>";
+    }
+    echo "</table>";
+
+}
+
+
 
 function check_cid($cid){
     return is_numeric($cid);
