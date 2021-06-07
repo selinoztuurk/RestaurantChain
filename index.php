@@ -1,7 +1,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="index_quiz.css">
+<link rel="stylesheet" href="index.css">
 </head>
 <body>
 
@@ -15,7 +15,7 @@
     
     <h3 class="ui center aligned header">Our each branch offers a unique experience. See which recipes are served on one branch and not on the other, by entering the ID number of each branch. </h3>
     
-    <form action='result_quiz.php' method='post'>
+    <form action='result.php' method='post'>
     <div class="ui input">
         <input type="number" name="first_branch" placeholder="First Branch ID">
     </div>
@@ -30,11 +30,11 @@
     <hr>
 
     <!-- Find the names of the staff that works in a branch with higher rating than 
-        average of all braches and has served more than 20 orders -->
+        average of all braches and has served more than 10 orders -->
     
     <h3 class="ui center aligned header">We apprecieate all the efort that our staff has been putting in since the very first day. Click to view our best staff who has received above the average rating on their orders and has successfully served more than 10 times.</h3>
     
-    <form action='result_quiz.php' method='post'>
+    <form action='result.php' method='post'>
         <button class="ui button" name="get_successful_staff" type='submit'>
         Get Successful Staff
         </button>
@@ -44,7 +44,7 @@
     <!-- Give them raise -->
     <h3 class="ui center aligned header">Customer is always right in our Restaurant Chain. Give our best staff a salary raise on any amount you wish.</h3>
     
-    <form action='result_quiz.php' method='post'>
+    <form action='result.php' method='post'>
 
     <div class="ui input">
     <input type="number" name="raise" placeholder="How much % raise?">
@@ -58,7 +58,7 @@
     <!-- Annual profit -->
     <h3 class="ui center aligned header">We have been happily serving since 1990. If you are an investor, our Restaurant Chain is the best option you have! Check our annual profits by entering a year, between 1990 and 2020 (both years included).</h3>
     
-    <form action='result_quiz.php' method='post'>
+    <form action='result.php' method='post'>
     <div class="ui input">
     <input type="number" name="year" placeholder="Which year's profits?">
     </div>
@@ -71,7 +71,7 @@
     <!-- Find the average profit list of recipes -->
     <h3 class="ui center aligned header">Some of our recipes are not only super delicious, but also very profitable! Click to see the average profits receieved from each recipe.</h3>
     
-    <form action='result_quiz.php' method='post'>
+    <form action='result.php' method='post'>
     <button class="ui button" name="get_average_profits" type='submit'>
     Get Average Recipe Profits
     </button>

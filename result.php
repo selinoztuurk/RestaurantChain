@@ -1,7 +1,7 @@
 <?php
 
 require_once 'include/dbConnect.php';
-require_once 'include/functions_quiz.php';
+require_once 'include/functions.php';
 
 if (isset($_POST['get_different_recipes'])){
 
