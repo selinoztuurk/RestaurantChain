@@ -7,14 +7,14 @@ function check_branch($conn, $branch){
 function diff_recipe($conn, $branch1, $branch2){
 
     $sql = 
-    "SELECT R.RecipeName 
-    FROM RestaurantChain.Recipe as R, RestaurantChain.Orders as O
-        WHERE O.RecipeName = R.RecipeName 
-            AND O.BID = '$branch1'  
+    "SELECT DISTINCT R.RecipeName 
+    FROM RestaurantChain.MenuHasRecipe as R, RestaurantChain.Menu as M
+        WHERE M.Number = R.MenuNumber
+            AND M.BID = '$branch1'  
             AND R.RecipeName NOT IN (SELECT R.RecipeName 
-                                        FROM RestaurantChain.Recipe as R, RestaurantChain.Orders as O
-                                        WHERE O.RecipeName = R.RecipeName 
-                                        AND O.BID = '$branch2');
+                                        FROM RestaurantChain.MenuHasRecipe as R, RestaurantChain.Menu as M
+                                        WHERE M.Number = R.MenuNumber 
+                                        AND M.BID = '$branch2');
     ";
 
     $result = mysqli_query($conn, $sql);
@@ -53,7 +53,7 @@ function successful_staff($conn){
     AND S.SID IN (SELECT O2.StaffID 
                     FROM Orders as O2
                     GROUP BY (O2.StaffID)
-                    HAVING COUNT(*)>20); 
+                    HAVING COUNT(*)>10); 
     ";
 
     $result = mysqli_query($conn, $sql);
@@ -78,7 +78,7 @@ function raise_salaries($conn,$percent) {
         AND S.SID IN (SELECT O2.StaffID 
                         FROM Orders as O2
                         GROUP BY (O2.StaffID)
-                        HAVING COUNT(*)>20)) as my_table(my_names)
+                        HAVING COUNT(*)>10)) as my_table(my_names)
     ON Staff.Name = my_table.my_names
     SET Staff.Salary = Staff.Salary*'$raise_amount';";
 
@@ -127,7 +127,7 @@ function print_profit_table($result){
     <table border='1'>
     <tr>
     <th>Branch ID</th>
-    <th>Annual Profit</th>
+    <th>Annual Profit ($)</th>
     </tr>
     <?php
     foreach($result as $row){
@@ -162,7 +162,7 @@ function print_recipe_profit_table($result){
     <table border='1'>
     <tr>
     <th>Recipe Name</th>
-    <th>Average Profit</th>
+    <th>Average Profit ($)</th>
     </tr>
     <?php
     foreach($result as $row){

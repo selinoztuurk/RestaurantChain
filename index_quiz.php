@@ -32,7 +32,7 @@
     <!-- Find the names of the staff that works in a branch with higher rating than 
         average of all braches and has served more than 20 orders -->
     
-    <h3 class="ui center aligned header">We apprecieate all the efort that our staff has been putting in since the very first day. Click to view our best staff who has received above the average rating on their orders and has successfully served more than 20 times.</h3>
+    <h3 class="ui center aligned header">We apprecieate all the efort that our staff has been putting in since the very first day. Click to view our best staff who has received above the average rating on their orders and has successfully served more than 10 times.</h3>
     
     <form action='result_quiz.php' method='post'>
         <button class="ui button" name="get_successful_staff" type='submit'>
@@ -56,7 +56,7 @@
     <hr>
 
     <!-- Annual profit -->
-    <h3 class="ui center aligned header">If you are an investor, our Restaurant Chain is the best option you have! Check our annual profits by entering a year.</h3>
+    <h3 class="ui center aligned header">We have been happily serving since 1990. If you are an investor, our Restaurant Chain is the best option you have! Check our annual profits by entering a year, between 1990 and 2020 (both years included).</h3>
     
     <form action='result_quiz.php' method='post'>
     <div class="ui input">
